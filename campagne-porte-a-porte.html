@@ -259,6 +259,10 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            autocomplete: off;
+            autocorrect: off;
+            autocapitalize: off;
+            spellcheck: false;
         }
         
         input[type="date"] {
@@ -692,7 +696,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.5 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v2.7 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -714,19 +718,19 @@
                     
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input type="text" id="name" required placeholder="Votre nom">
+                        <input type="text" id="name" required placeholder="Votre nom" autocomplete="off">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="building">Immeuble</label>
-                        <input type="text" id="building" required placeholder="Adresse de l'immeuble">
+                        <input type="text" id="building" required placeholder="Adresse de l'immeuble" autocomplete="off">
                     </div>
                     
                     <div class="form-group">
                         <label for="stairway">Montée</label>
-                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1...">
+                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1..." autocomplete="off">
                     </div>
                 </div>
                 
@@ -740,16 +744,16 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="contactName">Nom du contact</label>
-                                <input type="text" id="contactName" placeholder="Nom">
+                                <input type="text" id="contactName" placeholder="Nom" autocomplete="off">
                             </div>
                             <div class="form-group">
                                 <label for="contactPhone">Téléphone</label>
-                                <input type="tel" id="contactPhone" placeholder="06 12 34 56 78">
+                                <input type="tel" id="contactPhone" placeholder="06 12 34 56 78" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="contactEmail">Email</label>
-                            <input type="email" id="contactEmail" placeholder="email@exemple.fr">
+                            <input type="email" id="contactEmail" placeholder="email@exemple.fr" autocomplete="off">
                         </div>
                         <button type="button" class="btn btn-add-contact" onclick="addContact()">+ Ajouter ce contact</button>
                     </div>
@@ -792,7 +796,7 @@
                 <div class="filter-group">
                     <div class="form-group">
                         <label for="filterDate">Filtrer par date</label>
-                        <input type="date" id="filterDate">
+                        <input type="date" id="filterDate" autocomplete="off">
                     </div>
                     <button type="button" class="btn btn-primary" onclick="displayRecords()">Afficher</button>
                 </div>
@@ -815,6 +819,27 @@
         // Définir la date du jour par défaut
         document.getElementById('date').valueAsDate = new Date();
         document.getElementById('filterDate').valueAsDate = new Date();
+        
+        // Formatage automatique du téléphone
+        document.getElementById('contactPhone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Garder seulement les chiffres
+            
+            if (value.length > 10) {
+                value = value.substring(0, 10);
+            }
+            
+            // Formater en 06 12 34 56 78
+            if (value.length > 0) {
+                let formatted = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 2 === 0) {
+                        formatted += ' ';
+                    }
+                    formatted += value[i];
+                }
+                e.target.value = formatted;
+            }
+        });
         
         // Pré-remplir les champs avec les dernières valeurs de la date
         function prefillFieldsForDate(date) {
@@ -948,12 +973,33 @@
             }
             
             const editId = document.getElementById('editId').value;
+            const date = document.getElementById('date').value;
+            const name = document.getElementById('name').value;
+            const building = document.getElementById('building').value;
+            const stairway = document.getElementById('stairway').value;
+            
+            // Vérifier les doublons (sauf si on est en mode édition)
+            if (!editId) {
+                const records = getRecords();
+                const duplicate = records.find(r => 
+                    r.date === date && 
+                    r.name === name && 
+                    r.building === building && 
+                    r.stairway === stairway
+                );
+                
+                if (duplicate) {
+                    alert('⚠️ Un enregistrement existe déjà avec ces mêmes informations (Date, Nom, Immeuble, Montée).\n\nVeuillez modifier au moins une de ces valeurs ou utilisez le bouton "Modifier" sur l\'enregistrement existant.');
+                    return;
+                }
+            }
+            
             const record = {
                 id: editId || Date.now().toString(),
-                date: document.getElementById('date').value,
-                name: document.getElementById('name').value,
-                building: document.getElementById('building').value,
-                stairway: document.getElementById('stairway').value,
+                date: date,
+                name: name,
+                building: building,
+                stairway: stairway,
                 closedDoors: closedDoors,
                 openDoors: openDoors,
                 totalDoors: closedDoors + openDoors,
