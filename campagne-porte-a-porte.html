@@ -37,6 +37,15 @@
             line-height: 1.6;
             padding: 0;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .container {
@@ -90,6 +99,7 @@
         
         .form-group {
             margin-bottom: 12px;
+            min-width: 0;
         }
         
         .form-row {
@@ -97,10 +107,12 @@
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 12px;
+            width: 100%;
         }
         
         .form-row .form-group {
             margin-bottom: 0;
+            min-width: 0;
         }
         
         .contacts-section {
@@ -234,12 +246,14 @@
         input[type="text"],
         input[type="date"] {
             width: 100%;
+            max-width: 100%;
             padding: 8px 12px;
             border: 2px solid var(--border);
             border-radius: 6px;
             font-size: 0.9rem;
             font-family: 'Marianne', sans-serif;
             transition: all 0.3s ease;
+            box-sizing: border-box;
         }
         
         input[type="text"]:focus,
