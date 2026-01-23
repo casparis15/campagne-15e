@@ -28,6 +28,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            touch-action: manipulation;
         }
         
         body {
@@ -461,8 +462,8 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
-            padding-bottom: 6px;
+            margin-bottom: 4px;
+            padding-bottom: 4px;
             border-bottom: 1px solid var(--border);
             font-size: 0.8rem;
         }
@@ -489,7 +490,7 @@
         .record-contacts {
             font-size: 0.75rem;
             color: var(--text);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             padding: 4px;
             background: #f8f9fa;
             border-radius: 4px;
@@ -697,7 +698,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.9 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.0 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -916,6 +917,12 @@
                 return;
             }
             
+            // Validation de l'email s'il est renseigné
+            if (email && !isValidEmail(email)) {
+                alert('⚠️ L\'adresse email saisie n\'est pas valide.\nFormat attendu : exemple@domaine.fr');
+                return;
+            }
+            
             const contact = {
                 id: Date.now().toString(),
                 name: name,
@@ -930,6 +937,12 @@
             document.getElementById('contactName').value = '';
             document.getElementById('contactEmail').value = '';
             document.getElementById('contactPhone').value = '';
+        }
+        
+        // Fonction de validation email
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
         
         function removeContact(contactId) {
