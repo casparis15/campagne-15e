@@ -502,27 +502,27 @@
         .record-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 4px;
             margin-top: 6px;
         }
         
         .stat-box {
             text-align: center;
-            padding: 4px;
+            padding: 3px;
             border-radius: 4px;
             background: #f8f9fa;
         }
         
         .stat-label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-light);
             text-transform: uppercase;
             font-weight: 700;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         
         .stat-value {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 800;
             color: var(--primary);
             font-family: 'Spectral', serif;
@@ -637,15 +637,24 @@
             }
             
             .record-stats {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
             }
             
             .filter-group {
                 flex-direction: column;
+                gap: 6px;
             }
             
             .filter-group .form-group {
                 width: 100%;
+                min-width: 0;
+            }
+            
+            .filter-group input[type="date"] {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
             }
             
             .record-actions {
@@ -661,7 +670,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.1 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v2.2 (23/01/2025)</div>
     </header>
 
     <div class="container">
