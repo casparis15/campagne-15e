@@ -244,7 +244,9 @@
         }
         
         input[type="text"],
-        input[type="date"] {
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"] {
             width: 100%;
             max-width: 100%;
             padding: 8px 12px;
@@ -254,6 +256,13 @@
             font-family: 'Marianne', sans-serif;
             transition: all 0.3s ease;
             box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        
+        input[type="date"] {
+            min-width: 0;
         }
         
         input[type="text"]:focus,
@@ -605,12 +614,21 @@
             }
             
             .form-row {
-                grid-template-columns: 1fr;
-                gap: 0;
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
             }
             
             .form-row .form-group {
                 margin-bottom: 12px;
+                min-width: 0;
+            }
+            
+            input[type="text"],
+            input[type="date"],
+            input[type="email"],
+            input[type="tel"] {
+                font-size: 16px;
+                padding: 6px 8px;
             }
             
             .counter-group {
@@ -643,7 +661,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.0 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v2.1 (23/01/2025)</div>
     </header>
 
     <div class="container">
