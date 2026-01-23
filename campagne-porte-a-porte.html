@@ -424,6 +424,7 @@
             margin-bottom: 8px;
             transition: all 0.3s ease;
             animation: slideIn 0.4s ease;
+            position: relative;
         }
         
         @keyframes slideIn {
@@ -540,8 +541,40 @@
             margin-top: 6px;
             padding-top: 6px;
             border-top: 1px solid var(--border);
-            display: flex;
+            display: none;
             gap: 6px;
+        }
+        
+        .record-actions.show {
+            display: flex;
+        }
+        
+        .toggle-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 145, 0.3);
+        }
+        
+        .toggle-actions:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .toggle-actions.active {
+            background: var(--accent);
         }
         
         .filter-section {
@@ -659,7 +692,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.4 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v2.5 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -907,6 +940,13 @@
         document.getElementById('recordForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Vérifier que le total n'est pas 0
+            const totalDoors = closedDoors + openDoors;
+            if (totalDoors === 0) {
+                alert('⚠️ Vous devez enregistrer au moins une porte (fermée ou ouverte) avant de sauvegarder.');
+                return;
+            }
+            
             const editId = document.getElementById('editId').value;
             const record = {
                 id: editId || Date.now().toString(),
@@ -1005,6 +1045,7 @@
                 
                 return `
                     <div class="record-item">
+                        <button class="toggle-actions" onclick="toggleActions('${record.id}')">⋮</button>
                         <div class="record-header-inline">
                             <div class="record-name">${record.name}</div>
                             <div class="record-detail">Immeuble : ${record.building}</div>
@@ -1025,13 +1066,22 @@
                                 <div class="stat-value">${record.totalDoors}</div>
                             </div>
                         </div>
-                        <div class="record-actions">
+                        <div class="record-actions" id="actions-${record.id}">
                             <button class="btn btn-secondary btn-sm" onclick="editRecord('${record.id}')">✏️ Modifier</button>
                             <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')">🗑️ Supprimer</button>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+        
+        // Toggle l'affichage des actions
+        function toggleActions(recordId) {
+            const actionsDiv = document.getElementById('actions-' + recordId);
+            const toggleBtn = event.target;
+            
+            actionsDiv.classList.toggle('show');
+            toggleBtn.classList.toggle('active');
         }
         
         // Modifier un enregistrement
