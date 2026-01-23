@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000091">
     <meta name="description" content="Application de suivi porte à porte - Le 15e avec Emmanuel Grégoire">
     <link rel="manifest" href="manifest.json">
@@ -671,6 +671,7 @@
             input[type="tel"] {
                 font-size: 16px;
                 padding: 6px 8px;
+                -webkit-user-select: text;
             }
             
             .counter-group {
@@ -696,7 +697,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v2.7 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v2.8 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -718,19 +719,19 @@
                     
                     <div class="form-group">
                         <label for="name">Nom</label>
-                        <input type="text" id="name" required placeholder="Votre nom" autocomplete="off">
+                        <input type="text" id="name" required placeholder="Votre nom" autocomplete="off" data-form-type="other">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="building">Immeuble</label>
-                        <input type="text" id="building" required placeholder="Adresse de l'immeuble" autocomplete="off">
+                        <input type="text" id="building" required placeholder="Adresse de l'immeuble" autocomplete="off" data-form-type="other">
                     </div>
                     
                     <div class="form-group">
                         <label for="stairway">Montée</label>
-                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1..." autocomplete="off">
+                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1..." autocomplete="off" data-form-type="other">
                     </div>
                 </div>
                 
@@ -744,16 +745,16 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="contactName">Nom du contact</label>
-                                <input type="text" id="contactName" placeholder="Nom" autocomplete="off">
+                                <input type="text" id="contactName" placeholder="Nom" autocomplete="off" data-form-type="other">
                             </div>
                             <div class="form-group">
                                 <label for="contactPhone">Téléphone</label>
-                                <input type="tel" id="contactPhone" placeholder="06 12 34 56 78" autocomplete="off">
+                                <input type="tel" id="contactPhone" placeholder="06 12 34 56 78" autocomplete="off" data-form-type="other">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="contactEmail">Email</label>
-                            <input type="email" id="contactEmail" placeholder="email@exemple.fr" autocomplete="off">
+                            <input type="email" id="contactEmail" placeholder="email@exemple.fr" autocomplete="off" data-form-type="other">
                         </div>
                         <button type="button" class="btn btn-add-contact" onclick="addContact()">+ Ajouter ce contact</button>
                     </div>
@@ -1177,6 +1178,20 @@
         
         // Charger les enregistrements au démarrage
         displayRecords();
+        
+        // Trick pour désactiver la barre d'accessibilité iOS
+        // Mettre readonly puis l'enlever au focus
+        document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(input => {
+            input.setAttribute('readonly', 'readonly');
+            
+            input.addEventListener('focus', function() {
+                this.removeAttribute('readonly');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.setAttribute('readonly', 'readonly');
+            });
+        });
         
         // Enregistrer le Service Worker pour PWA
         if ('serviceWorker' in navigator) {
