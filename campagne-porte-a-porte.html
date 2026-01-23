@@ -468,12 +468,6 @@
             font-size: 0.8rem;
         }
         
-        .record-header-inline:first-of-type {
-            padding-bottom: 4px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 2px;
-        }
-        
         .record-name {
             font-size: 0.8rem;
             font-weight: 400;
@@ -704,7 +698,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v3.1 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.2 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1110,6 +1104,7 @@
                     : '';
                 
                 const recordDate = new Date(record.date).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+                const stairwayText = record.stairway ? ` / ${record.stairway}` : '';
                 
                 return `
                     <div class="record-item">
@@ -1119,8 +1114,7 @@
                             <div class="record-name">${record.name}</div>
                         </div>
                         <div class="record-header-inline">
-                            <div class="record-detail">Immeuble : ${record.building}</div>
-                            <div class="record-detail">Montée : ${record.stairway || '-'}</div>
+                            <div class="record-detail">${record.building}${stairwayText}</div>
                         </div>
                         ${contactsHtml}
                         <div class="record-stats">
