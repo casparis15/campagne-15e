@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000091">
+    <meta name="description" content="Application de suivi porte à porte - Le 15e avec Emmanuel Grégoire">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Campagne Municipales Paris - Porte à Porte</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Marianne:wght@400;700;800&family=Spectral:wght@400;600&display=swap');
+        
+        :root {
+            --primary: #000091;
+            --primary-dark: #00006e;
+            --accent: #e1000f;
+            --success: #18753c;
+            --bg: #f6f6f6;
+            --card: #ffffff;
+            --text: #161616;
+            --text-light: #666666;
+            --border: #dddddd;
+            --shadow: rgba(0, 0, 145, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Marianne', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f6f6f6 0%, #e8e8f0 100%);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 20%, #ff6b9d 50%, #c2185b 70%, #27ae60 100%);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px var(--shadow);
+            margin-bottom: 15px;
+            border-bottom: 3px solid var(--accent);
+        }
+        
+        h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 3px;
+            text-transform: none;
+        }
+        
+        .subtitle {
+            font-family: 'Spectral', serif;
+            font-size: 0.75rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 8px var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+            min-width: 0;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        
+        .form-row .form-group {
+            margin-bottom: 0;
+            min-width: 0;
+        }
+        
+        .contacts-section {
+            background: #f8f9fa;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 12px 0;
+        }
+        
+        .section-subtitle {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .contacts-list {
+            margin-bottom: 8px;
+        }
+        
+        .contact-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .contact-info {
+            flex: 1;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .contact-info div {
+            margin-bottom: 0;
+        }
+        
+        .contact-name {
+            font-weight: 700;
+            color: var(--text);
+        }
+        
+        .contact-detail {
+            color: var(--text-light);
+        }
+        
+        .btn-remove-contact {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-remove-contact:hover {
+            background: #b8000d;
+            transform: scale(1.05);
+        }
+        
+        .contact-form {
+            padding: 0;
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 12px;
+        }
+        
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form input[type="tel"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: 'Marianne', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 0, 145, 0.1);
+        }
+        
+        .btn-add-contact {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            padding: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 8px;
+        }
+        
+        .btn-add-contact:hover {
+            background: #146c33;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 117, 60, 0.3);
+        }
+        
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+        
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            max-width: 100%;
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: 'Marianne', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 0, 145, 0.1);
+        }
+        
+        .counter-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        
+        .counter {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 8px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid var(--border);
+        }
+        
+        .counter-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+        
+        .counter-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 4px 0;
+            font-family: 'Spectral', serif;
+        }
+        
+        .counter-btn {
+            width: 100%;
+            padding: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-closed {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+        
+        .btn-closed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        .btn-open {
+            background: linear-gradient(135deg, var(--success) 0%, #146c33 100%);
+            color: white;
+        }
+        
+        .btn-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 117, 60, 0.3);
+        }
+        
+        .total-counter {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #000;
+            border: 2px solid var(--border);
+        }
+        
+        .total-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            color: var(--text-light);
+        }
+        
+        .total-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 6px 0;
+            font-family: 'Spectral', serif;
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-family: 'Marianne', sans-serif;
+        }
+        
+        .btn-primary {
+            background: #fff100;
+            color: #000;
+            width: 100%;
+            font-weight: 800;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 241, 0, 0.4);
+            background: #ffe600;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+            margin-right: 10px;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent) 0%, #b8000d 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(225, 0, 15, 0.3);
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+        
+        .record-list {
+            margin-top: 12px;
+        }
+        
+        .record-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .record-item:hover {
+            box-shadow: 0 2px 12px var(--shadow);
+            border-color: var(--primary);
+        }
+        
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .record-header-inline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+        }
+        
+        .record-name {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text);
+        }
+        
+        .record-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
+        }
+        
+        .record-detail {
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+        
+        .record-contacts {
+            font-size: 0.75rem;
+            color: var(--text);
+            margin-bottom: 6px;
+            padding: 4px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        
+        .contact-line {
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        
+        .contact-line:last-child {
+            margin-bottom: 0;
+        }
+        
+        .record-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: 6px;
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 4px;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        
+        .stat-label {
+            font-size: 0.6rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        
+        .stat-value {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: 'Spectral', serif;
+        }
+        
+        .stat-box.closed .stat-value {
+            color: #dc3545;
+        }
+        
+        .stat-box.open .stat-value {
+            color: var(--success);
+        }
+        
+        .record-actions {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 6px;
+        }
+        
+        .filter-section {
+            margin-bottom: 12px;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        
+        .filter-group .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 25px 15px;
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            font-style: italic;
+            color: var(--text-light);
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--success);
+            animation: slideIn 0.4s ease;
+            font-size: 0.85rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 8px;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            
+            h1 {
+                font-size: 1.1rem;
+            }
+            
+            .subtitle {
+                font-size: 0.7rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            
+            .form-row .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .counter-group {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+            
+            .record-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-group {
+                flex-direction: column;
+            }
+            
+            .filter-group .form-group {
+                width: 100%;
+            }
+            
+            .record-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
+        <div class="subtitle">PAP Light - v2.0 (23/01/2025)</div>
+    </header>
+
+    <div class="container">
+        <!-- Message de succès -->
+        <div id="successMessage" class="success-message hidden"></div>
+
+        <!-- Formulaire de saisie -->
+        <div class="card">
+            <h2 class="section-title" id="formTitle">Nouvel Enregistrement</h2>
+            
+            <form id="recordForm">
+                <input type="hidden" id="editId" value="">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Nom</label>
+                        <input type="text" id="name" required placeholder="Votre nom">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="building">Immeuble</label>
+                        <input type="text" id="building" required placeholder="Adresse de l'immeuble">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="stairway">Montée</label>
+                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1...">
+                    </div>
+                </div>
+                
+                <!-- Section Contacts -->
+                <div class="contacts-section">
+                    <div class="section-subtitle">Contacts rencontrés</div>
+                    
+                    <div id="contactsList" class="contacts-list"></div>
+                    
+                    <div class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Nom du contact</label>
+                                <input type="text" id="contactName" placeholder="Nom">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Téléphone</label>
+                                <input type="tel" id="contactPhone" placeholder="06 12 34 56 78">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" placeholder="email@exemple.fr">
+                        </div>
+                        <button type="button" class="btn btn-add-contact" onclick="addContact()">+ Ajouter ce contact</button>
+                    </div>
+                </div>
+                
+                <div class="counter-group">
+                    <div class="counter">
+                        <div class="counter-label">Portes Fermées</div>
+                        <div class="counter-value" id="closedCount">0</div>
+                        <button type="button" class="counter-btn btn-closed" onclick="incrementClosed()">+ Fermée</button>
+                    </div>
+                    
+                    <div class="counter">
+                        <div class="counter-label">Portes Ouvertes</div>
+                        <div class="counter-value" id="openCount">0</div>
+                        <button type="button" class="counter-btn btn-open" onclick="incrementOpen()">+ Ouverte</button>
+                    </div>
+                    
+                    <div class="counter total-counter">
+                        <div class="counter-label total-label">Total Portes</div>
+                        <div class="counter-value total-value" id="totalCount">0</div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <span id="submitBtnText">Enregistrer</span>
+                </button>
+                
+                <button type="button" class="btn btn-secondary hidden" id="cancelEditBtn" onclick="cancelEdit()" style="width: 100%; margin-top: 10px;">
+                    Annuler
+                </button>
+            </form>
+        </div>
+
+        <!-- Section d'affichage -->
+        <div class="card">
+            <h2 class="section-title">Historique</h2>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <div class="form-group">
+                        <label for="filterDate">Filtrer par date</label>
+                        <input type="date" id="filterDate">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="displayRecords()">Afficher</button>
+                </div>
+            </div>
+            
+            <div id="recordList" class="record-list"></div>
+        </div>
+    </div>
+
+    <footer>
+        Tous droits réservés Place Publique Paris 15<sup>e</sup>
+    </footer>
+
+    <script>
+        // Initialisation
+        let closedDoors = 0;
+        let openDoors = 0;
+        let contacts = [];
+        
+        // Définir la date du jour par défaut
+        document.getElementById('date').valueAsDate = new Date();
+        document.getElementById('filterDate').valueAsDate = new Date();
+        
+        // Pré-remplir les champs avec les dernières valeurs de la date
+        function prefillFieldsForDate(date) {
+            // Ne pas pré-remplir si on est en mode édition
+            if (document.getElementById('editId').value) {
+                return;
+            }
+            
+            const records = getRecords();
+            const recordsForDate = records.filter(r => r.date === date);
+            
+            if (recordsForDate.length > 0) {
+                // Trier par timestamp décroissant pour obtenir le plus récent
+                recordsForDate.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                const lastRecord = recordsForDate[0];
+                
+                // Pré-remplir les champs
+                document.getElementById('name').value = lastRecord.name;
+                document.getElementById('building').value = lastRecord.building;
+                document.getElementById('stairway').value = lastRecord.stairway || '';
+            }
+        }
+        
+        // Écouter les changements de date
+        document.getElementById('date').addEventListener('change', function() {
+            prefillFieldsForDate(this.value);
+        });
+        
+        // Pré-remplir au chargement initial
+        prefillFieldsForDate(document.getElementById('date').value);
+        
+        // Charger les données du localStorage
+        function getRecords() {
+            const records = localStorage.getItem('campaignRecords');
+            return records ? JSON.parse(records) : [];
+        }
+        
+        function saveRecords(records) {
+            localStorage.setItem('campaignRecords', JSON.stringify(records));
+        }
+        
+        // Incrémenter les compteurs
+        function incrementClosed() {
+            closedDoors++;
+            updateCounters();
+        }
+        
+        function incrementOpen() {
+            openDoors++;
+            updateCounters();
+        }
+        
+        function updateCounters() {
+            document.getElementById('closedCount').textContent = closedDoors;
+            document.getElementById('openCount').textContent = openDoors;
+            document.getElementById('totalCount').textContent = closedDoors + openDoors;
+        }
+        
+        function resetCounters() {
+            closedDoors = 0;
+            openDoors = 0;
+            updateCounters();
+        }
+        
+        // Gestion des contacts
+        function addContact() {
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim();
+            
+            if (!name && !email && !phone) {
+                alert('Veuillez renseigner au moins une information de contact.');
+                return;
+            }
+            
+            const contact = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                phone: phone
+            };
+            
+            contacts.push(contact);
+            displayContacts();
+            
+            // Réinitialiser les champs de contact
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactPhone').value = '';
+        }
+        
+        function removeContact(contactId) {
+            contacts = contacts.filter(c => c.id !== contactId);
+            displayContacts();
+        }
+        
+        function displayContacts() {
+            const contactsList = document.getElementById('contactsList');
+            
+            if (contacts.length === 0) {
+                contactsList.innerHTML = '';
+                return;
+            }
+            
+            contactsList.innerHTML = contacts.map(contact => {
+                const parts = [];
+                if (contact.name) parts.push(`<span class="contact-name">${contact.name}</span>`);
+                if (contact.email) parts.push(`<span class="contact-detail">📧 ${contact.email}</span>`);
+                if (contact.phone) parts.push(`<span class="contact-detail">📞 ${contact.phone}</span>`);
+                
+                return `
+                    <div class="contact-item">
+                        <div class="contact-info">
+                            ${parts.join('')}
+                        </div>
+                        <button class="btn-remove-contact" onclick="removeContact('${contact.id}')">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Gestion du formulaire
+        document.getElementById('recordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const editId = document.getElementById('editId').value;
+            const record = {
+                id: editId || Date.now().toString(),
+                date: document.getElementById('date').value,
+                name: document.getElementById('name').value,
+                building: document.getElementById('building').value,
+                stairway: document.getElementById('stairway').value,
+                closedDoors: closedDoors,
+                openDoors: openDoors,
+                totalDoors: closedDoors + openDoors,
+                contacts: [...contacts],
+                timestamp: editId ? getRecords().find(r => r.id === editId).timestamp : new Date().toISOString()
+            };
+            
+            let records = getRecords();
+            
+            if (editId) {
+                // Modification
+                records = records.map(r => r.id === editId ? record : r);
+                showSuccess('Enregistrement modifié avec succès !');
+            } else {
+                // Création
+                records.push(record);
+                showSuccess('Enregistrement créé avec succès !');
+            }
+            
+            saveRecords(records);
+            resetForm();
+            displayRecords();
+        });
+        
+        function resetForm() {
+            const currentDate = document.getElementById('date').value;
+            const currentName = document.getElementById('name').value;
+            const currentBuilding = document.getElementById('building').value;
+            const currentStairway = document.getElementById('stairway').value;
+            
+            document.getElementById('recordForm').reset();
+            document.getElementById('editId').value = '';
+            
+            // Restaurer la date et les champs pour la continuité
+            document.getElementById('date').value = currentDate;
+            document.getElementById('name').value = currentName;
+            document.getElementById('building').value = currentBuilding;
+            document.getElementById('stairway').value = currentStairway;
+            
+            document.getElementById('formTitle').textContent = 'Nouvel Enregistrement';
+            document.getElementById('submitBtnText').textContent = 'Enregistrer';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+            resetCounters();
+            
+            // Réinitialiser les contacts
+            contacts = [];
+            displayContacts();
+        }
+        
+        function showSuccess(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 3000);
+        }
+        
+        // Afficher les enregistrements
+        function displayRecords() {
+            const filterDate = document.getElementById('filterDate').value;
+            const records = getRecords();
+            const filteredRecords = filterDate 
+                ? records.filter(r => r.date === filterDate)
+                : records;
+            
+            // Trier par timestamp décroissant (plus récent d'abord)
+            filteredRecords.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            const recordList = document.getElementById('recordList');
+            
+            if (filteredRecords.length === 0) {
+                recordList.innerHTML = '<div class="empty-state">Aucun enregistrement trouvé pour cette date.</div>';
+                return;
+            }
+            
+            recordList.innerHTML = filteredRecords.map(record => {
+                const contactsHtml = record.contacts && record.contacts.length > 0 
+                    ? `<div class="record-contacts">
+                        ${record.contacts.map(c => {
+                            const parts = [];
+                            if (c.name) parts.push(c.name);
+                            if (c.email) parts.push(`📧 ${c.email}`);
+                            if (c.phone) parts.push(`📞 ${c.phone}`);
+                            return `<div class="contact-line">👤 ${parts.join(' ')}</div>`;
+                        }).join('')}
+                       </div>`
+                    : '';
+                
+                return `
+                    <div class="record-item">
+                        <div class="record-header-inline">
+                            <div class="record-name">${record.name}</div>
+                            <div class="record-detail">Immeuble : ${record.building}</div>
+                            <div class="record-detail">Montée : ${record.stairway || '-'}</div>
+                        </div>
+                        ${contactsHtml}
+                        <div class="record-stats">
+                            <div class="stat-box closed">
+                                <div class="stat-label">Fermées</div>
+                                <div class="stat-value">${record.closedDoors}</div>
+                            </div>
+                            <div class="stat-box open">
+                                <div class="stat-label">Ouvertes</div>
+                                <div class="stat-value">${record.openDoors}</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-label">Total</div>
+                                <div class="stat-value">${record.totalDoors}</div>
+                            </div>
+                        </div>
+                        <div class="record-actions">
+                            <button class="btn btn-secondary btn-sm" onclick="editRecord('${record.id}')">✏️ Modifier</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRecord('${record.id}')">🗑️ Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Modifier un enregistrement
+        function editRecord(id) {
+            const records = getRecords();
+            const record = records.find(r => r.id === id);
+            
+            if (!record) return;
+            
+            document.getElementById('editId').value = record.id;
+            document.getElementById('date').value = record.date;
+            document.getElementById('name').value = record.name;
+            document.getElementById('building').value = record.building;
+            document.getElementById('stairway').value = record.stairway;
+            closedDoors = record.closedDoors;
+            openDoors = record.openDoors;
+            updateCounters();
+            
+            // Charger les contacts
+            contacts = record.contacts ? [...record.contacts] : [];
+            displayContacts();
+            
+            document.getElementById('formTitle').textContent = 'Modifier l\'Enregistrement';
+            document.getElementById('submitBtnText').textContent = 'Mettre à jour';
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            
+            // Scroll vers le formulaire
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function cancelEdit() {
+            resetForm();
+        }
+        
+        // Supprimer un enregistrement
+        function deleteRecord(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) {
+                return;
+            }
+            
+            let records = getRecords();
+            records = records.filter(r => r.id !== id);
+            saveRecords(records);
+            showSuccess('Enregistrement supprimé avec succès !');
+            displayRecords();
+        }
+        
+        // Charger les enregistrements au démarrage
+        displayRecords();
+        
+        // Enregistrer le Service Worker pour PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => console.log('Service Worker enregistré'))
+                    .catch(err => console.log('Erreur Service Worker:', err));
+            });
+        }
+    </script>
+</body>
+</html>
