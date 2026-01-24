@@ -700,6 +700,28 @@
             color: #ff6b9d;
         }
         
+        .btn-copy-history {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+        }
+        
+        .btn-copy-history:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+            background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 8px;
@@ -768,7 +790,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v3.3 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.4 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1247,9 +1269,104 @@
                             </div>
                         </div>
                     </div>
+                    <button class="btn btn-copy-history" onclick="copyHistoryToClipboard()">📋 Copier l'historique</button>
                 `;
                 
                 recordList.innerHTML += summaryHtml;
+            }
+        }
+        
+        // Copier l'historique dans le presse-papier
+        async function copyHistoryToClipboard() {
+            const filterDate = document.getElementById('filterDate').value;
+            const records = getRecords();
+            const filteredRecords = filterDate 
+                ? records.filter(r => r.date === filterDate)
+                : records;
+            
+            if (filteredRecords.length === 0) {
+                alert('Aucun enregistrement à copier.');
+                return;
+            }
+            
+            // Trier par timestamp
+            filteredRecords.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            // Calculer les totaux
+            const totalClosed = filteredRecords.reduce((sum, r) => sum + r.closedDoors, 0);
+            const totalOpen = filteredRecords.reduce((sum, r) => sum + r.openDoors, 0);
+            const totalDoors = totalClosed + totalOpen;
+            const openRate = totalDoors > 0 ? ((totalOpen / totalDoors) * 100).toFixed(1) : 0;
+            const totalContacts = filteredRecords.reduce((sum, r) => sum + (r.contacts ? r.contacts.length : 0), 0);
+            
+            // Formater la date
+            const dateStr = filterDate 
+                ? new Date(filterDate).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+                : 'Tous les enregistrements';
+            
+            // Construire le texte
+            let text = `📊 HISTORIQUE PORTE À PORTE - Le 15e avec Emmanuel Grégoire\n`;
+            text += `Date : ${dateStr}\n`;
+            text += `\n`;
+            text += `═══════════════════════════════════════\n`;
+            text += `RÉCAPITULATIF\n`;
+            text += `═══════════════════════════════════════\n`;
+            text += `Portes fermées : ${totalClosed}\n`;
+            text += `Portes ouvertes : ${totalOpen}\n`;
+            text += `Total portes : ${totalDoors}\n`;
+            text += `Taux d'ouverture : ${openRate}%\n`;
+            text += `Contacts collectés : ${totalContacts}\n`;
+            text += `Enregistrements : ${filteredRecords.length}\n`;
+            text += `\n`;
+            text += `═══════════════════════════════════════\n`;
+            text += `DÉTAIL DES ENREGISTREMENTS\n`;
+            text += `═══════════════════════════════════════\n\n`;
+            
+            filteredRecords.forEach((record, index) => {
+                const recordDate = new Date(record.date).toLocaleDateString('fr-FR');
+                text += `${index + 1}. ${recordDate} - ${record.name}\n`;
+                text += `   Immeuble : ${record.building}\n`;
+                if (record.stairway) {
+                    text += `   Montée : ${record.stairway}\n`;
+                }
+                text += `   Portes : ${record.closedDoors} fermées / ${record.openDoors} ouvertes (Total: ${record.totalDoors})\n`;
+                
+                if (record.contacts && record.contacts.length > 0) {
+                    text += `   Contacts (${record.contacts.length}) :\n`;
+                    record.contacts.forEach(contact => {
+                        const parts = [];
+                        if (contact.name) parts.push(contact.name);
+                        if (contact.email) parts.push(contact.email);
+                        if (contact.phone) parts.push(contact.phone);
+                        text += `     • ${parts.join(' - ')}\n`;
+                    });
+                }
+                text += `\n`;
+            });
+            
+            text += `───────────────────────────────────────\n`;
+            text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
+            text += `Application PAP Light v3.4\n`;
+            
+            // Copier dans le presse-papier
+            try {
+                await navigator.clipboard.writeText(text);
+                alert('✅ Historique copié dans le presse-papier !\n\nVous pouvez maintenant le coller dans un email, SMS ou document.');
+            } catch (err) {
+                // Fallback pour les navigateurs qui ne supportent pas l'API Clipboard
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('✅ Historique copié dans le presse-papier !\n\nVous pouvez maintenant le coller dans un email, SMS ou document.');
+                } catch (err2) {
+                    alert('❌ Impossible de copier l\'historique. Veuillez réessayer.');
+                }
+                document.body.removeChild(textArea);
             }
         }
         
