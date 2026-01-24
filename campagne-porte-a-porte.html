@@ -111,6 +111,10 @@
             width: 100%;
         }
         
+        .form-row-date-name {
+            grid-template-columns: 35% 65%;
+        }
+        
         .form-row .form-group {
             margin-bottom: 0;
             min-width: 0;
@@ -790,7 +794,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v3.5 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.8 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -804,15 +808,15 @@
             <form id="recordForm">
                 <input type="hidden" id="editId" value="">
                 
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="form-row form-row-date-name">
+                    <div class="form-group form-group-date">
                         <label for="date">Date</label>
                         <input type="date" id="date" required>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="name">Nom</label>
-                        <input type="text" id="name" required placeholder="Votre nom" autocomplete="off" data-form-type="other" inputmode="text">
+                    <div class="form-group form-group-name">
+                        <label for="name">Noms du binôme</label>
+                        <input type="text" id="name" required placeholder="Prénoms ou noms des personnes" autocomplete="off" data-form-type="other" inputmode="text">
                     </div>
                 </div>
                 
@@ -824,7 +828,7 @@
                     
                     <div class="form-group">
                         <label for="stairway">Montée</label>
-                        <input type="text" id="stairway" placeholder="Ex: Escalier A, Entrée 1..." autocomplete="off" data-form-type="other" inputmode="text">
+                        <input type="text" id="stairway" placeholder="Ex: Bât. A étg impaires" autocomplete="off" data-form-type="other" inputmode="text">
                     </div>
                 </div>
                 
@@ -848,6 +852,10 @@
                         <div class="form-group">
                             <label for="contactEmail">Email</label>
                             <input type="email" id="contactEmail" placeholder="email@exemple.fr" autocomplete="off" data-form-type="other" inputmode="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactReasons">Raisons</label>
+                            <input type="text" id="contactReasons" placeholder="Intérêt pour la campagne, sujet de préoccupation..." autocomplete="off" data-form-type="other" inputmode="text">
                         </div>
                         <button type="button" class="btn btn-add-contact" onclick="addContact()">+ Ajouter ce contact</button>
                     </div>
@@ -918,6 +926,7 @@
         document.getElementById('contactPhone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, ''); // Garder seulement les chiffres
             
+            // Limiter à 10 chiffres
             if (value.length > 10) {
                 value = value.substring(0, 10);
             }
@@ -959,7 +968,14 @@
         
         // Écouter les changements de date
         document.getElementById('date').addEventListener('change', function() {
-            prefillFieldsForDate(this.value);
+            // Pré-remplir les champs sauf si on est en mode édition
+            if (!document.getElementById('editId').value) {
+                prefillFieldsForDate(this.value);
+                
+                // Vider les champs Immeuble et Montée
+                document.getElementById('building').value = '';
+                document.getElementById('stairway').value = '';
+            }
         });
         
         // Pré-remplir au chargement initial
@@ -1003,8 +1019,9 @@
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
             const phone = document.getElementById('contactPhone').value.trim();
+            const reasons = document.getElementById('contactReasons').value.trim();
             
-            if (!name && !email && !phone) {
+            if (!name && !email && !phone && !reasons) {
                 alert('Veuillez renseigner au moins une information de contact.');
                 return;
             }
@@ -1019,7 +1036,8 @@
                 id: Date.now().toString(),
                 name: name,
                 email: email,
-                phone: phone
+                phone: phone,
+                reasons: reasons
             };
             
             contacts.push(contact);
@@ -1029,6 +1047,7 @@
             document.getElementById('contactName').value = '';
             document.getElementById('contactEmail').value = '';
             document.getElementById('contactPhone').value = '';
+            document.getElementById('contactReasons').value = '';
         }
         
         // Fonction de validation email
@@ -1055,6 +1074,7 @@
                 if (contact.name) parts.push(`<span class="contact-name">${contact.name}</span>`);
                 if (contact.email) parts.push(`<span class="contact-detail">📧 ${contact.email}</span>`);
                 if (contact.phone) parts.push(`<span class="contact-detail">📞 ${contact.phone}</span>`);
+                if (contact.reasons) parts.push(`<span class="contact-detail">💬 ${contact.reasons}</span>`);
                 
                 return `
                     <div class="contact-item">
@@ -1190,6 +1210,7 @@
                             if (c.name) parts.push(c.name);
                             if (c.email) parts.push(`📧 ${c.email}`);
                             if (c.phone) parts.push(`📞 ${c.phone}`);
+                            if (c.reasons) parts.push(`💬 ${c.reasons}`);
                             return `<div class="contact-line">👤 ${parts.join(' ')}</div>`;
                         }).join('')}
                        </div>`
@@ -1338,6 +1359,7 @@
                         if (contact.name) parts.push(contact.name);
                         if (contact.email) parts.push(contact.email);
                         if (contact.phone) parts.push(contact.phone);
+                        if (contact.reasons) parts.push(`"${contact.reasons}"`);
                         text += `     • ${parts.join(' - ')}\n`;
                     });
                 }
@@ -1346,7 +1368,8 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v3.4\n`;
+            text += `Application PAP Light v3.8\n`;
+            text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
             try {
