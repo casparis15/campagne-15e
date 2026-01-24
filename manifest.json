@@ -1,6 +1,6 @@
 {
-  "name": "Le 15e avec Emmanuel Grégoire - Porte à Porte",
-  "short_name": "Campagne 15e",
+  "name": "PAP Light - Le 15e avec Emmanuel Grégoire",
+  "short_name": "PAP Light",
   "description": "Application de suivi porte à porte pour la campagne municipale",
   "start_url": "./campagne-porte-a-porte.html",
   "display": "standalone",
