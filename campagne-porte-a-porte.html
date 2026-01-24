@@ -998,7 +998,7 @@
 
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.08 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.09 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1119,16 +1119,11 @@
     <script>
         // Gestion de la modal RGPD
         function checkRGPDConsent() {
-            const consent = localStorage.getItem('rgpdConsent');
-            if (consent === 'accepted') {
-                document.getElementById('rgpdModal').classList.add('hidden');
-            } else {
-                document.getElementById('rgpdModal').classList.remove('hidden');
-            }
+            // Toujours afficher la popup au démarrage
+            document.getElementById('rgpdModal').classList.remove('hidden');
         }
         
         function acceptRGPD() {
-            localStorage.setItem('rgpdConsent', 'accepted');
             document.getElementById('rgpdModal').classList.add('hidden');
         }
         
@@ -1646,7 +1641,7 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.08\n`;
+            text += `Application PAP Light v1.09\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
