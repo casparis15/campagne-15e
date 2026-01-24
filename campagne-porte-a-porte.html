@@ -709,9 +709,187 @@
             color: #ff6b9d;
         }
         
-        .btn-copy-history {
-            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        .rgpd-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+        
+        .rgpd-modal.hidden {
+            display: none;
+        }
+        
+        .rgpd-content {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rgpd-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .rgpd-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .rgpd-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-accept-rgpd {
+            background: var(--success);
             color: white;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-accept-rgpd:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-decline-rgpd {
+            background: #dc3545;
+            color: white;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-decline-rgpd:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+        
+        .contact-consent-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+        
+        .contact-consent-modal.hidden {
+            display: none;
+        }
+        
+        .contact-consent-content {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .contact-consent-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .contact-consent-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        
+        .contact-consent-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn-accept-consent {
+            background: var(--success);
+            color: white;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-accept-consent:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-refuse-consent {
+            background: #6c757d;
+            color: white;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-refuse-consent:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+        
+        .btn-copy-history {
+            background: var(--accent);
+            color: var(--text);
             width: 100%;
             padding: 12px;
             font-size: 0.95rem;
@@ -727,8 +905,8 @@
         
         .btn-copy-history:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-            background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+            box-shadow: 0 4px 12px rgba(255, 241, 0, 0.4);
+            background: #e6d600;
         }
         
         @media (max-width: 600px) {
@@ -797,9 +975,37 @@
     </style>
 </head>
 <body>
+    <!-- Modal RGPD -->
+    <div class="rgpd-modal" id="rgpdModal">
+        <div class="rgpd-content">
+            <div class="rgpd-title">⚖️ Protection des données personnelles</div>
+            <div class="rgpd-text">
+                Cette application permet de collecter des données à caractère personnel et son utilisation est soumise à votre engagement à respecter la confidentialité de ces données et à vous conformer au respect la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016).
+            </div>
+            <div class="rgpd-buttons">
+                <button class="btn-accept-rgpd" onclick="acceptRGPD()">✓ Je m'engage à respecter mes obligations</button>
+                <button class="btn-decline-rgpd" onclick="declineRGPD()">✕ Je quitte l'application</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal consentement contact -->
+    <div class="contact-consent-modal hidden" id="contactConsentModal">
+        <div class="contact-consent-content">
+            <div class="contact-consent-title">🔒 Consentement de collecte</div>
+            <div class="contact-consent-text">
+                La collecte des données personnelles dans le cadre de la campagne des municipales 2026 est soumise à la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016).
+            </div>
+            <div class="contact-consent-buttons">
+                <button class="btn-accept-consent" onclick="confirmAddContact()">✓ J'autorise la collecte de mes données de contact</button>
+                <button class="btn-refuse-consent" onclick="cancelAddContact()">✕ Je refuse la collecte</button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.01 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.05 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -918,10 +1124,38 @@
     </footer>
 
     <script>
+        // Gestion de la modal RGPD
+        function checkRGPDConsent() {
+            const consent = localStorage.getItem('rgpdConsent');
+            if (consent === 'accepted') {
+                document.getElementById('rgpdModal').classList.add('hidden');
+            } else {
+                document.getElementById('rgpdModal').classList.remove('hidden');
+            }
+        }
+        
+        function acceptRGPD() {
+            localStorage.setItem('rgpdConsent', 'accepted');
+            document.getElementById('rgpdModal').classList.add('hidden');
+        }
+        
+        function declineRGPD() {
+            alert('Vous avez choisi de ne pas accepter les conditions d\'utilisation.\n\nL\'application va se fermer.');
+            // Fermer l'application
+            window.close();
+            // Si window.close() ne fonctionne pas (certains navigateurs), rediriger vers une page vide
+            setTimeout(() => {
+                window.location.href = 'about:blank';
+            }, 100);
+        }
+        
         // Initialisation
         let closedDoors = 0;
         let openDoors = 0;
         let contacts = [];
+        
+        // Vérifier le consentement RGPD au chargement
+        checkRGPDConsent();
         
         // Définir la date du jour par défaut
         document.getElementById('date').valueAsDate = new Date();
@@ -1019,6 +1253,9 @@
             updateCounters();
         }
         
+        // Variables temporaires pour le contact en attente
+        let pendingContactData = null;
+        
         // Gestion des contacts
         function addContact() {
             const name = document.getElementById('contactName').value.trim();
@@ -1046,7 +1283,8 @@
                 }
             }
             
-            const contact = {
+            // Stocker les données temporairement
+            pendingContactData = {
                 id: Date.now().toString(),
                 name: name,
                 email: email,
@@ -1054,14 +1292,45 @@
                 reasons: reasons
             };
             
-            contacts.push(contact);
-            displayContacts();
+            // Afficher la modal de consentement
+            document.getElementById('contactConsentModal').classList.remove('hidden');
+        }
+        
+        // Confirmer l'ajout du contact
+        function confirmAddContact() {
+            if (pendingContactData) {
+                contacts.push(pendingContactData);
+                displayContacts();
+                
+                // Réinitialiser les champs de contact
+                document.getElementById('contactName').value = '';
+                document.getElementById('contactEmail').value = '';
+                document.getElementById('contactPhone').value = '';
+                document.getElementById('contactReasons').value = '';
+                
+                pendingContactData = null;
+            }
             
-            // Réinitialiser les champs de contact
+            // Fermer la modal
+            document.getElementById('contactConsentModal').classList.add('hidden');
+        }
+        
+        // Annuler l'ajout du contact
+        function cancelAddContact() {
+            // Vider les champs de contact
             document.getElementById('contactName').value = '';
             document.getElementById('contactEmail').value = '';
             document.getElementById('contactPhone').value = '';
             document.getElementById('contactReasons').value = '';
+            
+            // Vider les données temporaires
+            pendingContactData = null;
+            
+            // Fermer la modal
+            document.getElementById('contactConsentModal').classList.add('hidden');
+            
+            // Message optionnel
+            alert('Le contact n\'a pas été enregistré.');
         }
         
         // Fonction de validation email
@@ -1343,6 +1612,8 @@
             let text = `📊 HISTORIQUE PORTE À PORTE - Le 15e avec Emmanuel Grégoire\n`;
             text += `Date : ${dateStr}\n`;
             text += `\n`;
+            text += `En retransmettant les données des contacts collectées dans le cadre de la campagne des municipales 2026, vous vous engagez à respecter la confidentialité de ces données et à vous conformer au respect la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016).\n`;
+            text += `\n`;
             text += `═══════════════════════════════════════\n`;
             text += `RÉCAPITULATIF\n`;
             text += `═══════════════════════════════════════\n`;
@@ -1382,7 +1653,7 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.01\n`;
+            text += `Application PAP Light v1.05\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
