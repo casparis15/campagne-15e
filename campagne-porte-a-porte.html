@@ -634,6 +634,72 @@
             display: none;
         }
         
+        .day-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+        
+        .summary-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .summary-item {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .summary-label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+        
+        .summary-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: 'Spectral', serif;
+        }
+        
+        .summary-value.closed {
+            color: #dc3545;
+        }
+        
+        .summary-value.open {
+            color: var(--success);
+        }
+        
+        .summary-value.total {
+            color: var(--primary);
+        }
+        
+        .summary-value.rate {
+            color: var(--success);
+        }
+        
+        .summary-value.contacts {
+            color: #ff6b9d;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 8px;
@@ -692,13 +758,17 @@
             .btn {
                 width: 100%;
             }
+            
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v3.2 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.3 (23/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1138,6 +1208,49 @@
                     </div>
                 `;
             }).join('');
+            
+            // Calculer et afficher le récapitulatif
+            if (filteredRecords.length > 0) {
+                const totalClosed = filteredRecords.reduce((sum, r) => sum + r.closedDoors, 0);
+                const totalOpen = filteredRecords.reduce((sum, r) => sum + r.openDoors, 0);
+                const totalDoors = totalClosed + totalOpen;
+                const openRate = totalDoors > 0 ? ((totalOpen / totalDoors) * 100).toFixed(1) : 0;
+                const totalContacts = filteredRecords.reduce((sum, r) => sum + (r.contacts ? r.contacts.length : 0), 0);
+                
+                const summaryHtml = `
+                    <div class="day-summary">
+                        <div class="summary-title">📊 Récapitulatif de la journée</div>
+                        <div class="summary-grid">
+                            <div class="summary-item">
+                                <div class="summary-label">Portes fermées</div>
+                                <div class="summary-value closed">${totalClosed}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Portes ouvertes</div>
+                                <div class="summary-value open">${totalOpen}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Total portes</div>
+                                <div class="summary-value total">${totalDoors}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Taux d'ouverture</div>
+                                <div class="summary-value rate">${openRate}%</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Contacts collectés</div>
+                                <div class="summary-value contacts">${totalContacts}</div>
+                            </div>
+                            <div class="summary-item">
+                                <div class="summary-label">Enregistrements</div>
+                                <div class="summary-value">${filteredRecords.length}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                recordList.innerHTML += summaryHtml;
+            }
         }
         
         // Toggle l'affichage des actions
