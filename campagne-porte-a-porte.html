@@ -99,7 +99,7 @@
         }
         
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             min-width: 0;
         }
         
@@ -107,7 +107,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             width: 100%;
         }
         
@@ -120,12 +120,17 @@
             min-width: 0;
         }
         
+        .form-group-date input,
+        .form-group-name input {
+            height: 38px;
+        }
+        
         .contacts-section {
             background: #f8f9fa;
             border: 2px solid var(--border);
             border-radius: 8px;
             padding: 10px;
-            margin: 12px 0;
+            margin: 10px 0;
         }
         
         .section-subtitle {
@@ -194,7 +199,7 @@
         }
         
         .contact-form .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
         .contact-form input[type="text"],
@@ -794,7 +799,7 @@
 <body>
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v3.8 (23/01/2025)</div>
+        <div class="subtitle">PAP Light - v3.9 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1030,6 +1035,15 @@
             if (email && !isValidEmail(email)) {
                 alert('⚠️ L\'adresse email saisie n\'est pas valide.\nFormat attendu : exemple@domaine.fr');
                 return;
+            }
+            
+            // Validation du téléphone s'il est renseigné
+            if (phone) {
+                const phoneDigits = phone.replace(/\D/g, '');
+                if (phoneDigits.length !== 10) {
+                    alert('⚠️ Le numéro de téléphone doit contenir exactement 10 chiffres.\nFormat attendu : 06 12 34 56 78');
+                    return;
+                }
             }
             
             const contact = {
@@ -1368,7 +1382,7 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v3.8\n`;
+            text += `Application PAP Light v3.9\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
