@@ -998,7 +998,7 @@
 
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.11 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.12 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1125,6 +1125,9 @@
         
         function acceptRGPD() {
             document.getElementById('rgpdModal').classList.add('hidden');
+            
+            // Purger les données de plus de 5 jours
+            purgeOldRecords();
         }
         
         function declineRGPD() {
@@ -1235,6 +1238,26 @@
         
         // Pré-remplir au chargement initial
         prefillFieldsForDate(document.getElementById('date').value);
+        
+        // Fonction pour purger les données de plus de 5 jours
+        function purgeOldRecords() {
+            const records = getRecords();
+            const now = new Date();
+            const fiveDaysAgo = new Date(now.getTime() - (5 * 24 * 60 * 60 * 1000));
+            
+            // Filtrer pour garder uniquement les enregistrements de moins de 5 jours
+            const recentRecords = records.filter(record => {
+                const recordDate = new Date(record.date);
+                return recordDate >= fiveDaysAgo;
+            });
+            
+            // Si des enregistrements ont été supprimés
+            if (records.length !== recentRecords.length) {
+                const deletedCount = records.length - recentRecords.length;
+                localStorage.setItem('campaignRecords', JSON.stringify(recentRecords));
+                console.log(`Purge automatique : ${deletedCount} enregistrement(s) de plus de 5 jours supprimé(s).`);
+            }
+        }
         
         // Charger les données du localStorage
         function getRecords() {
@@ -1646,9 +1669,9 @@
             text += `\n`;
             text += `En retransmettant les données des contacts collectées dans le cadre de la campagne des municipales 2026, vous vous engagez à respecter la confidentialité de ces données et à vous conformer au respect la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016).\n`;
             text += `\n`;
-            text += `═══════════════════════════════════════\n`;
+            text += `----------------------\n`;
             text += `RÉCAPITULATIF\n`;
-            text += `═══════════════════════════════════════\n`;
+            text += `----------------------\n`;
             text += `Portes fermées : ${totalClosed}\n`;
             text += `Portes ouvertes : ${totalOpen}\n`;
             text += `Total portes : ${totalDoors}\n`;
@@ -1656,9 +1679,9 @@
             text += `Contacts collectés : ${totalContacts}\n`;
             text += `Enregistrements : ${filteredRecords.length}\n`;
             text += `\n`;
-            text += `═══════════════════════════════════════\n`;
+            text += `----------------------\n`;
             text += `DÉTAIL DES ENREGISTREMENTS\n`;
-            text += `═══════════════════════════════════════\n\n`;
+            text += `----------------------\n\n`;
             
             filteredRecords.forEach((record, index) => {
                 const recordDate = new Date(record.date).toLocaleDateString('fr-FR');
@@ -1683,9 +1706,9 @@
                 text += `\n`;
             });
             
-            text += `───────────────────────────────────────\n`;
+            text += `------------------------------\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.11\n`;
+            text += `Application PAP Light v1.12\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
