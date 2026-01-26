@@ -998,7 +998,7 @@
 
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.10 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.11 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1210,7 +1210,7 @@
         document.getElementById('date').addEventListener('change', function(e) {
             // Vérifier si une saisie est en cours
             if (checkFormData() && !document.getElementById('editId').value) {
-                if (!confirm('⚠️ Attention : Une saisie est en cours.\n\nSi vous changez de date, les champs Immeuble et Montée seront vidés.\n\nVoulez-vous continuer ?')) {
+                if (!confirm('⚠️ Attention : Une saisie est en cours.\n\nSi vous changez de date, les données saisies ne seront pas enregistrées.\n\nVoulez-vous continuer ?')) {
                     // Annuler le changement de date
                     e.preventDefault();
                     // Restaurer la valeur précédente (date du jour par défaut)
@@ -1355,11 +1355,18 @@
             return emailRegex.test(email);
         }
         
-        function removeContact(contactId) {
+        function removeContact(event, contactId) {
+            // Empêcher tout comportement par défaut et propagation
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
             if (confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce contact ?')) {
                 contacts = contacts.filter(c => c.id !== contactId);
                 displayContacts();
             }
+            // Si annulé, ne rien faire - la liste reste inchangée
         }
         
         function displayContacts() {
@@ -1382,7 +1389,7 @@
                         <div class="contact-info">
                             ${parts.join('')}
                         </div>
-                        <button class="btn-remove-contact" onclick="removeContact('${contact.id}')">✕</button>
+                        <button class="btn-remove-contact" onclick="removeContact(event, '${contact.id}')">✕</button>
                     </div>
                 `;
             }).join('');
@@ -1678,7 +1685,7 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.10\n`;
+            text += `Application PAP Light v1.11\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
