@@ -998,7 +998,7 @@
 
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.12 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.13 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1508,6 +1508,9 @@
             document.getElementById('cancelEditBtn').classList.add('hidden');
             resetCounters();
             
+            // Réinitialiser l'indicateur de saisie en cours
+            formHasData = false;
+            
             // Réinitialiser les contacts
             contacts = [];
             displayContacts();
@@ -1669,9 +1672,9 @@
             text += `\n`;
             text += `En retransmettant les données des contacts collectées dans le cadre de la campagne des municipales 2026, vous vous engagez à respecter la confidentialité de ces données et à vous conformer au respect la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016).\n`;
             text += `\n`;
-            text += `----------------------\n`;
+            text += `──────────────────────\n`;
             text += `RÉCAPITULATIF\n`;
-            text += `----------------------\n`;
+            text += `──────────────────────\n`;
             text += `Portes fermées : ${totalClosed}\n`;
             text += `Portes ouvertes : ${totalOpen}\n`;
             text += `Total portes : ${totalDoors}\n`;
@@ -1679,9 +1682,9 @@
             text += `Contacts collectés : ${totalContacts}\n`;
             text += `Enregistrements : ${filteredRecords.length}\n`;
             text += `\n`;
-            text += `----------------------\n`;
+            text += `──────────────────────\n`;
             text += `DÉTAIL DES ENREGISTREMENTS\n`;
-            text += `----------------------\n\n`;
+            text += `──────────────────────\n\n`;
             
             filteredRecords.forEach((record, index) => {
                 const recordDate = new Date(record.date).toLocaleDateString('fr-FR');
@@ -1706,9 +1709,9 @@
                 text += `\n`;
             });
             
-            text += `------------------------------\n`;
+            text += `──────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.12\n`;
+            text += `Application PAP Light v1.13\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
