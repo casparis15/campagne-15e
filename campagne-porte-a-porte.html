@@ -902,6 +902,18 @@
             margin-top: 12px;
         }
         
+        .rgpd-notice {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            color: #856404;
+            text-align: justify;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 padding: 8px;
@@ -1630,6 +1642,9 @@
                                 <div class="summary-value">${filteredRecords.length}</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="rgpd-notice">
+                        ⚖️ Conformément à la législation en vigueur sur la protection des données à caractère personnel (RGPD du 27 avril 2016), la durée de conservation des données collectées dans l'application est limitée. Seuls les 5 derniers jours d'historique sont conservés et vous devez transmettre les données avant ce délai. Au delà, les données sont définitivement effacées.
                     </div>
                     <button class="btn-copy-history" onclick="copyHistoryToClipboard()">📋 Copier l'historique</button>
                 `;
