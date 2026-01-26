@@ -998,7 +998,7 @@
 
     <header>
         <h1>Le 15<sup>e</sup> avec Emmanuel Grégoire !</h1>
-        <div class="subtitle">PAP Light - v1.09 (24/01/2025)</div>
+        <div class="subtitle">PAP Light - v1.10 (24/01/2025)</div>
     </header>
 
     <div class="container">
@@ -1027,12 +1027,12 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="building">Immeuble</label>
-                        <input type="text" id="building" required placeholder="Adresse de l'immeuble" autocomplete="off" data-form-type="other" inputmode="text">
+                        <input type="text" id="building" required placeholder="N° et rue" autocomplete="off" data-form-type="other" inputmode="text">
                     </div>
                     
                     <div class="form-group">
                         <label for="stairway">Montée</label>
-                        <input type="text" id="stairway" placeholder="Ex: Bât. A étg impaires" autocomplete="off" data-form-type="other" inputmode="text">
+                        <input type="text" id="stairway" placeholder="Ex: Bât. A étg impairs" autocomplete="off" data-form-type="other" inputmode="text">
                     </div>
                 </div>
                 
@@ -1046,7 +1046,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="contactName">Nom du contact</label>
-                                <input type="text" id="contactName" placeholder="Nom" autocomplete="off" data-form-type="other" inputmode="text">
+                                <input type="text" id="contactName" placeholder="Nom et prénom" autocomplete="off" data-form-type="other" inputmode="text">
                             </div>
                             <div class="form-group">
                                 <label for="contactPhone">Téléphone</label>
@@ -1141,6 +1141,19 @@
         let closedDoors = 0;
         let openDoors = 0;
         let contacts = [];
+        let formHasData = false;
+        
+        // Fonction pour vérifier si le formulaire a des données
+        function checkFormData() {
+            const name = document.getElementById('name').value.trim();
+            const building = document.getElementById('building').value.trim();
+            const stairway = document.getElementById('stairway').value.trim();
+            const hasCounters = closedDoors > 0 || openDoors > 0;
+            const hasContacts = contacts.length > 0;
+            
+            formHasData = name || building || stairway || hasCounters || hasContacts;
+            return formHasData;
+        }
         
         // Vérifier le consentement RGPD au chargement
         checkRGPDConsent();
@@ -1194,7 +1207,22 @@
         }
         
         // Écouter les changements de date
-        document.getElementById('date').addEventListener('change', function() {
+        document.getElementById('date').addEventListener('change', function(e) {
+            // Vérifier si une saisie est en cours
+            if (checkFormData() && !document.getElementById('editId').value) {
+                if (!confirm('⚠️ Attention : Une saisie est en cours.\n\nSi vous changez de date, les champs Immeuble et Montée seront vidés.\n\nVoulez-vous continuer ?')) {
+                    // Annuler le changement de date
+                    e.preventDefault();
+                    // Restaurer la valeur précédente (date du jour par défaut)
+                    const previousDate = this.getAttribute('data-previous-date') || new Date().toISOString().split('T')[0];
+                    this.value = previousDate;
+                    return;
+                }
+            }
+            
+            // Mémoriser la nouvelle date
+            this.setAttribute('data-previous-date', this.value);
+            
             // Pré-remplir les champs sauf si on est en mode édition
             if (!document.getElementById('editId').value) {
                 prefillFieldsForDate(this.value);
@@ -1328,8 +1356,10 @@
         }
         
         function removeContact(contactId) {
-            contacts = contacts.filter(c => c.id !== contactId);
-            displayContacts();
+            if (confirm('⚠️ Êtes-vous sûr de vouloir supprimer ce contact ?')) {
+                contacts = contacts.filter(c => c.id !== contactId);
+                displayContacts();
+            }
         }
         
         function displayContacts() {
@@ -1362,6 +1392,15 @@
         document.getElementById('recordForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Vérifier que les champs obligatoires sont remplis
+            const name = document.getElementById('name').value.trim();
+            const building = document.getElementById('building').value.trim();
+            
+            if (!name || !building) {
+                alert('⚠️ Les champs "Noms du binôme" et "Immeuble" sont obligatoires.');
+                return;
+            }
+            
             // Vérifier que le total n'est pas 0
             const totalDoors = closedDoors + openDoors;
             if (totalDoors === 0) {
@@ -1371,8 +1410,6 @@
             
             const editId = document.getElementById('editId').value;
             const date = document.getElementById('date').value;
-            const name = document.getElementById('name').value;
-            const building = document.getElementById('building').value;
             const stairway = document.getElementById('stairway').value;
             
             // Vérifier les doublons (sauf si on est en mode édition)
@@ -1641,7 +1678,7 @@
             
             text += `───────────────────────────────────────\n`;
             text += `Généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}\n`;
-            text += `Application PAP Light v1.09\n`;
+            text += `Application PAP Light v1.10\n`;
             text += `Propulsé par : Place Publique Paris 15\n`;
             
             // Copier dans le presse-papier
@@ -1722,6 +1759,15 @@
         
         // Charger les enregistrements au démarrage
         displayRecords();
+        
+        // Confirmation avant de quitter si saisie en cours
+        window.addEventListener('beforeunload', function(e) {
+            if (checkFormData() && !document.getElementById('editId').value) {
+                e.preventDefault();
+                e.returnValue = ''; // Chrome nécessite returnValue défini
+                return ''; // Pour les anciens navigateurs
+            }
+        });
         
         // Fonction pour appliquer le readonly trick
         function applyReadonlyTrick() {
