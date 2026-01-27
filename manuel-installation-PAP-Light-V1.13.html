@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>PAP Light – Installation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --rose: #ff4f81;
+      --jaune: #ffd54a;
+      --vert: #4caf50;
+      --gris-fond: #f7f7f7;
+      --texte: #222222;
+      --accent: #1a73e8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--gris-fond);
+      color: var(--texte);
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.5rem 1rem 1rem;
+      border-radius: 0 0 18px 18px;
+      background: linear-gradient(135deg, var(--jaune), var(--rose), var(--vert));
+      color: #ffffff;
+    }
+
+    header h1 {
+      margin: 0 0 0.25rem;
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+
+    header p {
+      margin: 0.1rem 0;
+      font-size: 0.95rem;
+    }
+
+    header .version {
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    main {
+      margin-top: 1.5rem;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem 1.75rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      border-left: 4px solid var(--rose);
+      padding-left: 0.6rem;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin: 1.1rem 0 0.5rem;
+      color: #444;
+    }
+
+    p {
+      margin: 0.4rem 0 0.6rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .url-box {
+      margin: 0.6rem 0 1rem;
+      padding: 0.7rem 0.8rem;
+      border-radius: 10px;
+      background: #f0f4ff;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .url-box span {
+      font-weight: 600;
+      color: #1a237e;
+    }
+
+    .url-box code {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.2rem 0.35rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    ol {
+      margin: 0.4rem 0 0.8rem 1.2rem;
+      padding-left: 0.8rem;
+    }
+
+    li {
+      margin: 0.25rem 0;
+    }
+
+    .sub-steps {
+      margin-top: 0.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .sub-steps li {
+      font-size: 0.9rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: #e8f5e9;
+      color: #1b5e20;
+      margin-bottom: 0.3rem;
+    }
+
+    .note {
+      margin-top: 1rem;
+      padding: 0.8rem 0.9rem;
+      border-radius: 10px;
+      background: #fff8e1;
+      font-size: 0.9rem;
+      border-left: 4px solid var(--jaune);
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .warning {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      background: #ffebee;
+      border-left: 4px solid #c62828;
+      font-size: 0.9rem;
+    }
+
+    .warning strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #c62828;
+    }
+
+    .support {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #ddd;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .support strong {
+      font-weight: 600;
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      opacity: 0.9;
+    }
+
+    @media (min-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      main {
+        padding: 1.75rem 1.75rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>PAP Light – Installation</h1>
+      <p>Application de porte-à-porte pour le 15e</p>
+      <p class="version">Version actuelle : <strong>PAP Light – v1.13 (25/01/2025)</strong></p>
+    </header>
+
+    <main>
+      <section aria-labelledby="lien-app">
+        <h2 id="lien-app">Accéder à l'application</h2>
+        <div class="url-box">
+          <span>Adresse :</span>
+          <code>
+            <a href="https://casparis15.github.io/campagne-15e/campagne-porte-a-porte.html?v=1.13">
+              https://casparis15.github.io/campagne-15e/campagne-porte-a-porte.html?v=1.13
+            </a>
+          </code>
+        </div>
+        <p>Ouvrez cette adresse dans le navigateur de votre téléphone, puis suivez les étapes ci-dessous pour installer l'application sur votre écran d'accueil.</p>
+      </section>
+
+      <section aria-labelledby="ios">
+        <h2 id="ios">Installation sur iPhone (iOS)</h2>
+        <span class="badge">iPhone / iOS</span>
+        <ol>
+          <li>Appuyez sur le bouton <strong>« Partager »</strong> (carré avec une flèche vers le haut, en haut ou en bas de l'écran).</li>
+          <li>Faites défiler les options (...), puis appuyez sur <strong>« + Sur l'écran d'accueil »</strong>.</li>
+        </ol>
+        <p>L'icône de l'application apparaît alors sur votre écran d'accueil, avec les couleurs <strong>jaune–rose–vert</strong> du 15e.</p>
+      </section>
+
+      <section aria-labelledby="android">
+        <h2 id="android">Installation sur Android</h2>
+        <span class="badge">Android</span>
+        <h3>Option A – Notification automatique</h3>
+        <ul class="sub-steps">
+          <li>Une notification <strong>« Ajouter à l'écran d'accueil »</strong> apparaît en bas de l'écran.</li>
+          <li>Appuyez sur <strong>« Installer »</strong> ou <strong>« Ajouter »</strong>.</li>
+        </ul>
+
+        <h3>Option B – Menu manuel</h3>
+        <ol class="sub-steps">
+          <li>Appuyez sur le menu (<strong>les 3 points verticaux</strong>) en haut à droite.</li>
+          <li>Sélectionnez <strong>« Ajouter à l'écran d'accueil »</strong>.</li>
+          <li>Confirmez en appuyant sur <strong>« Ajouter »</strong>.</li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="offline">
+        <h2 id="offline">Fonctionnement hors ligne</h2>
+        <div class="note">
+          <strong>Bonne nouvelle :</strong>
+          Une fois installée sur l'écran d'accueil, l'application fonctionne hors ligne, sans connexion internet.  
+          Vous pouvez donc l'utiliser sur le terrain même sans réseau.
+        </div>
+      </section>
+
+      <section aria-labelledby="version">
+        <h2 id="version">Vérifier la version</h2>
+        <p>En haut de l'écran de l'application, vous devez voir :</p>
+        <p><strong>« PAP Light - v1.13 (25/01/2025) »</strong></p>
+        <p>Si vous voyez une version plus ancienne :</p>
+        <ul>
+          <li>Videz le cache de votre navigateur, puis rechargez l'application.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="donnees">
+        <h2 id="donnees">Données et sauvegarde</h2>
+        <p>Toutes vos données sont :</p>
+        <ul>
+          <li><strong>Enregistrées uniquement sur votre téléphone</strong></li>
+          <li><strong>Conservées</strong> même si vous fermez l'application</li>
+        </ul>
+
+        <div class="warning">
+          <strong>Attention :</strong>
+          <ul>
+            <li>Si vous <span class="highlight">désinstallez</span> l'application, toutes les données seront effacées.</li>
+            <li>Si vous <span class="highlight">videz le cache</span> de votre navigateur, toutes les données seront également effacées.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="support" aria-labelledby="support">
+        <h2 id="support">Support</h2>
+        <p><strong>Contact :</strong> Claude-Alain (Place Publique Paris 15) par messagerie WhatsApp.</p>
+        <p class="tagline">Envoyez une capture d'écran et indiquez votre modèle de téléphone (iPhone / Android).</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
